@@ -1,0 +1,131 @@
+// Map info window styles
+.gm-style .gm-style-iw-c {
+  padding: 12px;
+
+  .map-info-window {
+    h3 {
+      margin: 0 0 8px 0;
+      font-size: 16px;
+      color: #0066cc;
+    }
+
+    p {
+      margin: 4px 0;
+      font-size: 13px;
+
+      strong {
+        color: #0066cc;
+      }
+    }
+  }
+}
+
+// Add these styles for the new confidence badge
+.confidence-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  margin-top: 8px;
+
+  &.confidence-exceptional {
+    background-color: #e3f2fd;
+    color: #0d47a1;
+  }
+
+  &.confidence-very-high {
+    background-color: #e8f5e9;
+    color: #1b5e20;
+  }
+
+  &.confidence-high {
+    background-color: #f1f8e9;
+    color: #33691e;
+  }
+
+  &.confidence-good {
+    background-color: #fffde7;
+    color: #f57f17;
+  }
+
+  &.confidence-average {
+    background-color: #fff8e1;
+    color: #ff8f00;
+  }
+
+  &.confidence-fair {
+    background-color: #fff3e0;
+    color: #e65100;
+  }
+
+  &.confidence-low {
+    background-color: #fbe9e7;
+    color: #bf360c;
+  }
+
+  &.confidence-insufficient-data {
+    background-color: #f5f5f5;
+    color: #757575;
+  }
+}
+
+.results-list-header {
+  padding: 0 8px;
+  margin-bottom: 12px;
+
+  .confidence-info {
+    font-size: 14px;
+    color: #666;
+    font-style: italic;
+    margin: 0;
+  }
+}
+
+.result-details {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+.selected-result {
+  .selected-result-details {
+    margin-bottom: 16px;
+  }
+
+  .confidence-explanation {
+    margin-top: 12px;
+    border-top: 1px solid #eee;
+    padding-top: 12px;
+
+    p {
+      font-size: 13px;
+      color: #666;
+      line-height: 1.4;
+      margin: 0;
+    }
+  }
+}
+
+.result-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+
+  .call-button {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: #4caf50;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: #388e3c;
+    }
+  }
+}
