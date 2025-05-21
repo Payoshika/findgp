@@ -14,6 +14,7 @@ interface Location {
 
 // Update the SearchResult interface
 
+// In MapContext.tsx
 interface SearchResult {
   id: string;
   name: string;
@@ -25,6 +26,15 @@ interface SearchResult {
   rating: number;
   user_ratings_total: number;
   place_id: string;
+  // These might be null if the details request failed
+  phone_number: string | null;
+  website: string | null;
+  opening_hours: {
+    weekday_text?: string[];
+    periods?: any[];
+    isOpen?: () => boolean;
+  } | null;
+  google_maps_url?: string | null;
   isTopThree: boolean;
 }
 
@@ -32,19 +42,22 @@ interface MapState {
   searchLocation: Location | null;
   searchResults: SearchResult[];
   selectedResult: SearchResult | null;
+  includePrivateGPs: boolean;
 }
 
 type MapAction =
   | { type: "SET_SEARCH_LOCATION"; payload: Location }
   | { type: "SET_SEARCH_RESULTS"; payload: SearchResult[] }
   | { type: "SELECT_RESULT"; payload: SearchResult | null }
-  | { type: "CLEAR_RESULTS" };
+  | { type: "CLEAR_RESULTS" }
+  | { type: "SET_INCLUDE_PRIVATE_GPS"; payload: boolean };
 
 // Initial state
 const initialState: MapState = {
   searchLocation: null,
   searchResults: [],
   selectedResult: null,
+  includePrivateGPs: false, // Add this line
 };
 
 // Create the context
@@ -76,6 +89,11 @@ const mapReducer = (state: MapState, action: MapAction): MapState => {
         ...state,
         searchResults: [],
         selectedResult: null,
+      };
+    case "SET_INCLUDE_PRIVATE_GPS":
+      return {
+        ...state,
+        includePrivateGPs: action.payload,
       };
     default:
       return state;

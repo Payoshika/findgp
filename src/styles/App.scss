@@ -1,8 +1,14 @@
 @use "./base.scss";
 @use "./user_location.scss";
 @use "./map.scss";
+@use "./search.scss";
+@use "./result.scss";
+@use "./grid.scss";
+
+$text-color: base.$text-color;
+$background-color: base.$background-color;
+
 .results-container {
-  margin: 20px 0;
   padding: 20px;
   background-color: white;
   border-radius: 8px;
@@ -10,8 +16,7 @@
 
   h2 {
     margin-top: 0;
-    margin-bottom: 15px;
-    color: #333;
+    color: $text-color;
     font-size: 18px;
   }
 
@@ -19,7 +24,6 @@
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 15px;
-    margin-bottom: 20px;
   }
 
   .result-item {
@@ -43,13 +47,13 @@
       margin-top: 0;
       margin-bottom: 8px;
       font-size: 16px;
-      color: #333;
+      color: $text-color;
     }
 
     .vicinity {
       margin: 8px 0;
       font-size: 14px;
-      color: #666;
+      color: $text-color;
     }
 
     .rating {
@@ -112,21 +116,21 @@
           margin-left: 5px;
           font-size: 14px;
           font-weight: bold;
-          color: #333;
+          color: $text-color;
         }
       }
 
       .review-count {
         margin-left: 5px;
         font-size: 12px;
-        color: #666;
+        color: $text-color;
       }
     }
 
     .no-rating {
       margin-top: 8px;
       font-size: 12px;
-      color: #999;
+      color: $text-color;
       font-style: italic;
     }
   }
@@ -174,7 +178,6 @@
 .map-container {
   position: relative;
   height: 400px;
-  margin: 20px 0;
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -238,9 +241,9 @@
   margin-top: 10px;
 
   .use-location-button {
-    background-color: #f0f0f0;
+    background-color: $background-color;
     border: 1px solid #ddd;
-    color: #333;
+    color: $text-color;
     padding: 8px 16px;
     border-radius: 4px;
     cursor: pointer;
@@ -250,7 +253,8 @@
     transition: all 0.2s ease;
 
     &:hover {
-      background-color: #e3e3e3;
+      background-color: #f0f0f0;
+      border-color: #ccc;
     }
 
     &:disabled {

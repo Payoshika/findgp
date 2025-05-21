@@ -1,25 +1,160 @@
-// Map info window styles
-.gm-style .gm-style-iw-c {
-  padding: 12px;
+.map-container {
+  margin: 0;
+}
+// Add these styles to your App.scss or a separate map.scss file
+.map-info-window {
+  font-family: "Roboto", Arial, sans-serif;
+  padding: 8px;
 
-  .map-info-window {
-    h3 {
-      margin: 0 0 8px 0;
-      font-size: 16px;
-      color: #0066cc;
+  .map-info-rank {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+
+    &.rank-1 {
+      background-color: #0080ff;
+      color: white;
     }
 
-    p {
-      margin: 4px 0;
-      font-size: 13px;
+    &.rank-2 {
+      background-color: #0080ff;
+      color: white;
+    }
 
-      strong {
-        color: #0066cc;
+    &.rank-3 {
+      background-color: #0080ff;
+      color: white;
+    }
+
+    .rank-number {
+      font-weight: bold;
+      margin-right: 4px;
+      font-size: 13px;
+    }
+
+    .rank-label {
+      font-size: 11px;
+      font-weight: 500;
+    }
+  }
+
+  h3 {
+    margin: 0 0 6px 0;
+    font-size: 16px;
+    color: #202124;
+  }
+
+  p {
+    margin: 0 0 8px 0;
+    font-size: 13px;
+    color: #5f6368;
+  }
+
+  .info-rating {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+
+    .rating-stars {
+      color: #fbbc04;
+      font-size: 14px;
+      margin-right: 6px;
+      letter-spacing: -1px;
+    }
+
+    .rating-value {
+      font-weight: bold;
+      margin-right: 4px;
+      color: #202124;
+    }
+
+    .review-count {
+      font-size: 12px;
+      color: #5f6368;
+    }
+  }
+
+  .confidence-indicator {
+    background-color: #f1f8e9;
+    padding: 4px 8px;
+    border-radius: 4px;
+    margin-bottom: 8px;
+    font-size: 12px;
+
+    .confidence-label {
+      color: #33691e;
+      margin-right: 4px;
+    }
+
+    .confidence-value {
+      font-weight: bold;
+      color: #33691e;
+    }
+  }
+
+  .action-links {
+    margin-top: 8px;
+
+    a {
+      display: inline-block;
+      color: #0080ff;
+      font-size: 12px;
+      text-decoration: none;
+      padding: 4px 8px;
+      border-radius: 4px;
+
+      &:hover {
+        background-color: #f1f3f4;
+        text-decoration: underline;
       }
     }
   }
 }
+.info-rank {
+  font-size: 12px;
+  margin: 8px 0;
+  color: #555;
+  font-style: italic;
+}
 
+.map-info-window .no-rating {
+  font-size: 12px;
+  color: #777;
+  font-style: italic;
+  margin: 4px 0;
+}
+
+// Override Google's default info window styles
+.gm-style .gm-style-iw-c {
+  padding: 12px !important;
+  border-radius: 8px !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1) !important;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.gm-style .gm-style-iw-d {
+  overflow: hidden !important;
+}
+
+.gm-style-iw-t::after {
+  background: linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 1) 50%,
+    rgba(255, 255, 255, 0) 51%,
+    rgba(255, 255, 255, 0) 100%
+  ) !important;
+  box-shadow: none !important;
+}
+
+.gm-style-iw-chr {
+  position: absolute !important;
+  top: 0 !important;
+  right: 0 !important;
+}
 // Add these styles for the new confidence badge
 .confidence-badge {
   display: inline-flex;
@@ -69,63 +204,82 @@
     background-color: #f5f5f5;
     color: #757575;
   }
-}
-
-.results-list-header {
-  padding: 0 8px;
-  margin-bottom: 12px;
-
-  .confidence-info {
-    font-size: 14px;
-    color: #666;
-    font-style: italic;
-    margin: 0;
-  }
-}
-
-.result-details {
+} // Add this to your CSS file
+.result-contact-details {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 4px;
-}
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid #eee;
 
-.selected-result {
-  .selected-result-details {
-    margin-bottom: 16px;
-  }
+  .contact-item {
+    display: flex;
+    align-items: center;
+    font-size: 13px;
 
-  .confidence-explanation {
-    margin-top: 12px;
-    border-top: 1px solid #eee;
-    padding-top: 12px;
+    .contact-icon {
+      margin-right: 6px;
+      font-size: 14px;
+    }
 
-    p {
-      font-size: 13px;
-      color: #666;
-      line-height: 1.4;
-      margin: 0;
+    a {
+      color: #0066cc;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    &.hours {
+      color: #5f6368;
+
+      .hours-preview {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 200px;
+      }
     }
   }
 }
 
-.result-actions {
-  display: flex;
-  gap: 10px;
-  margin-top: 16px;
+// Update the result-item to accommodate the new content
+.result-item {
+  padding: 16px;
+  margin-bottom: 16px;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  background-color: white;
+  cursor: pointer;
+  position: relative;
+  transition: box-shadow 0.2s, transform 0.1s;
 
-  .call-button {
-    display: inline-block;
-    padding: 8px 16px;
-    background-color: #4caf50;
-    color: white;
-    text-decoration: none;
-    border-radius: 4px;
-    font-size: 14px;
-    transition: background-color 0.2s;
+  &:hover {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
 
-    &:hover {
-      background-color: #388e3c;
-    }
+  &.selected {
+    border: 2px solid #4285f4;
+    box-shadow: 0 4px 8px rgba(66, 133, 244, 0.2);
+  }
+
+  &.top-three {
+    border-left: 4px solid #fbbc05;
+  }
+
+  // Ensure the top badge doesn't overflow
+  .top-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background-color: #fbbc05;
+    color: #fff;
+    font-size: 11px;
+    font-weight: bold;
+    padding: 3px 8px;
+    border-radius: 12px;
+    letter-spacing: 0.5px;
   }
 }

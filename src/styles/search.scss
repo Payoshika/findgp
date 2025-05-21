@@ -1,0 +1,105 @@
+@use "mixins" as mixins;
+@use "base" as base;
+$text-color: base.$text-color;
+$background-color: base.$background-color;
+
+.search {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .search-options-container {
+    display: flex;
+    gap: 2rem;
+  }
+  form {
+    width: 100%;
+    margin-bottom: 1rem;
+    .search-input-wrapper {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      .search-input {
+        @include mixins.box;
+        min-width: 40%;
+        max-width: 40rem;
+        height: 5rem;
+        border: none;
+        border-radius: 20px;
+        padding: 1.5rem;
+        background-color: $background-color;
+      }
+    }
+  }
+}
+// Add these styles to your CSS file
+.search-options {
+  margin-top: 12px;
+  display: flex;
+  justify-content: flex-end;
+
+  .toggle-container {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+    font-size: 14px;
+    color: #5f6368;
+
+    input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+      position: absolute;
+
+      &:checked + .toggle-switch {
+        background-color: #4285f4;
+
+        &:before {
+          transform: translateX(18px);
+        }
+      }
+
+      &:disabled + .toggle-switch {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+    }
+
+    .toggle-switch {
+      position: relative;
+      display: inline-block;
+      width: 36px;
+      height: 18px;
+      background-color: #ccc;
+      border-radius: 18px;
+      margin: 0 8px;
+      transition: background-color 0.3s;
+
+      &:before {
+        content: "";
+        position: absolute;
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        left: 2px;
+        bottom: 2px;
+        background-color: white;
+        transition: transform 0.3s;
+      }
+    }
+
+    .toggle-label {
+      margin-right: 6px;
+    }
+
+    .toggle-info {
+      color: #4285f4;
+      font-size: 12px;
+      border-radius: 50%;
+      font-style: italic;
+      font-weight: bold;
+      cursor: help;
+    }
+  }
+}

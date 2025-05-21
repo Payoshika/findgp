@@ -1,0 +1,41 @@
+@use "mixins" as mixins;
+@use "base" as base;
+$text-color: base.$text-color;
+$background-color: base.$background-color;
+
+.container {
+  display: grid;
+  //make 12 columns in a row with name to each col
+  grid-template-columns: repeat(12, 1fr);
+  //make rows for min-content
+  grid-auto-rows: min-content;
+  padding: 2rem;
+  min-height: 100vh;
+  max-width: 140rem;
+  gap: 2rem;
+  margin: 0 !important;
+}
+.header {
+  grid-column: 1 / -1;
+  grid-row: 1;
+  padding: 2rem;
+  text-align: center;
+}
+
+.search {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  padding: 2rem;
+  @include mixins.box;
+}
+
+.map {
+  grid-column: 1 / -1;
+  padding: 2rem;
+  @include mixins.box;
+}
+.results {
+  grid-column: 1 / -1;
+  padding: 2rem;
+  @include mixins.box;
+}

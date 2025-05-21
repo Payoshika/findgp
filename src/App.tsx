@@ -8,7 +8,7 @@ import { MapProvider } from "./context/MapContext";
 
 function App() {
   return (
-    <>
+    <div className="container">
       <Header />
       <MapProvider>
         <Search />
@@ -16,7 +16,7 @@ function App() {
         <Result />
       </MapProvider>
       <Footer />
-    </>
+    </div>
   );
 }
 
