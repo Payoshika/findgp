@@ -39,14 +39,23 @@ $background-color: base.$background-color;
   padding: 2rem;
   @include mixins.box;
 }
-
+.how-it-works-container {
+  grid-column: 1 / -1;
+  padding: 2rem;
+  @include mixins.box;
+}
+.about-container {
+  grid-column: 1 / -1;
+  padding: 2rem;
+  @include mixins.box;
+}
 .footer {
   grid-column: 1 / -1;
   padding: 2rem;
   text-align: center;
   display: flex;
   justify-content: center;
-  gap: 2rem;
+  gap: 3rem;
   .footer-link {
     font-size: 1.5rem;
     color: $text-color;

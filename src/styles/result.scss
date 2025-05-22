@@ -1,3 +1,8 @@
+.result-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
 .results-list-header {
   display: flex;
 }

@@ -4,6 +4,7 @@
 @use "./search.scss";
 @use "./result.scss";
 @use "./grid.scss";
+@use "./howitworks.scss";
 
 $text-color: base.$text-color;
 $background-color: base.$background-color;
@@ -73,7 +74,7 @@ $background-color: base.$background-color;
         left: 0;
         background-color: #0066cc;
         color: white;
-        font-size: 10px;
+        font-size: 1.5rem;
         font-weight: bold;
         padding: 3px 8px;
         border-radius: 0 0 4px 0;

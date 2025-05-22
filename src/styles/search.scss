@@ -55,6 +55,11 @@ $background-color: base.$background-color;
         border-radius: 20px;
         padding: 1.5rem;
         background-color: $background-color;
+        &:focus,
+        &:active {
+          border: 2px solid $text-color;
+          outline: none;
+        }
       }
     }
   }
@@ -128,5 +133,38 @@ $background-color: base.$background-color;
       font-weight: bold;
       cursor: help;
     }
+  }
+}
+
+// Custom styling for Google Places Autocomplete dropdown
+.pac-container {
+  background-color: $background-color !important; // Light gray background
+  border-radius: 20px !important;
+  // Individual items in the dropdown
+  .pac-item {
+    padding: 8px 12px !important;
+    border-top: 1px solid #f1f3f4 !important;
+
+    &:hover,
+    &-selected {
+      background-color: #f1f3f4 !important; // Light grey on hover/selection
+    }
+  }
+
+  // Main text in the dropdown
+  .pac-item-query {
+    color: $text-color !important;
+    font-size: 1.5rem !important;
+  }
+
+  // Secondary text (usually the address)
+  .pac-secondary-text {
+    color: $text-color !important;
+    font-size: 12px !important;
+  }
+
+  // Remove Google logo
+  &:after {
+    display: none !important;
   }
 }

@@ -5,7 +5,10 @@ const Footer = () => {
   return (
     <footer className="footer">
       <a href="/about" className="footer-link">
-        About Find GP
+        <strong>About Find GP</strong>
+      </a>
+      <a href="/how-it-works" className="footer-link">
+        <strong>How it Works</strong>
       </a>
       <a
         href="https://buymeacoffee.com/studyinthiscorner"
@@ -14,7 +17,7 @@ const Footer = () => {
         className="footer-link"
       >
         <img src={bmcImg} alt="Buy Me a Coffee" />
-        Buy Me a Coffee
+        <strong>Buy Me a Coffee</strong>
       </a>
     </footer>
   );

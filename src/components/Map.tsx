@@ -259,13 +259,13 @@ const Map = () => {
                     </div>`
                   : ""
               }
-              <p>📍 ${result.vicinity}</p>
+              <p>📍&nbsp;${result.vicinity}</p>
               
 ${
   result.phone_number
     ? `
   <div class="info-detail">
-    <strong>📞 </strong> 
+    <strong>📞&nbsp;</strong> 
     <a href="tel:${result.phone_number}">${result.phone_number}</a>
   </div>
 `
@@ -276,7 +276,7 @@ ${
   result.website
     ? `
   <div class="info-detail">
-    <strong>🌐 </strong> 
+    <strong>🌐&nbsp;</strong> 
     <a href="${result.website}" target="_blank">${result.website
         .replace(/^https?:\/\//, "")
         .replace(/\/$/, "")}</a>
@@ -352,14 +352,14 @@ ${
             </div>`
           : `<div class="no-rating">No ratings yet</div>`
       }
-      <p>📍 ${result.vicinity}</p>
+      <p>📍&nbsp;${result.vicinity}</p>
 
       
 ${
   result.phone_number
     ? `
   <div class="info-detail">
-    <strong>📞:</strong> 
+    <strong>📞&nbsp;</strong> 
     <a href="tel:${result.phone_number}">${result.phone_number}</a>
   </div>
 `
@@ -370,7 +370,7 @@ ${
   result.website
     ? `
   <div class="info-detail">
-    <strong>🌐 </strong> 
+    <strong>🌐&nbsp;</strong> 
     <a href="${result.website}" target="_blank">${result.website
         .replace(/^https?:\/\//, "")
         .replace(/\/$/, "")}</a>
@@ -388,18 +388,17 @@ ${
   </div>
 `
     : ""
-}
-      
-      <div class="info-rank">Rank: #${searchResults.indexOf(result) + 1} of ${
-            searchResults.length
-          }</div>
-      
+}     
       <div class="action-links">
         <a href="https://www.google.com/maps/place/?q=place_id:${
           result.place_id
         }" target="_blank">View on Google Maps</a>
       </div>
     </div>
+          
+      <div class="info-rank">Rank: #${searchResults.indexOf(result) + 1} of ${
+            searchResults.length
+          }</div>
   `;
 
           const infoWindow = new window.google.maps.InfoWindow({

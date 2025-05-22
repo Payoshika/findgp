@@ -1,3 +1,6 @@
+.info-detail {
+  margin-bottom: 1rem;
+}
 .gm-style-iw,
 .gm-style-iw-d {
   max-height: min-content !important;
@@ -101,18 +104,10 @@
   }
 
   .action-links {
-    margin-top: 8px;
-
     a {
       display: inline-block;
-      color: #0080ff;
-      font-size: 12px;
       text-decoration: none;
-      padding: 4px 8px;
-      border-radius: 4px;
-
       &:hover {
-        background-color: #f1f3f4;
         text-decoration: underline;
       }
     }
