@@ -3,6 +3,33 @@
 $text-color: base.$text-color;
 $background-color: base.$background-color;
 
+.search-status {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  @include mixins.box;
+  color: $text-color;
+  background-color: rgba($background-color, 0.85);
+  font-weight: 500;
+  z-index: 1000;
+  p {
+    font-size: 2rem;
+    color: $text-color;
+    text-align: center;
+  }
+}
+
+.info-detail {
+  display: flex;
+  align-items: center;
+}
+
 .search {
   display: flex;
   flex-direction: column;

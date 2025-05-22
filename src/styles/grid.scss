@@ -39,3 +39,27 @@ $background-color: base.$background-color;
   padding: 2rem;
   @include mixins.box;
 }
+
+.footer {
+  grid-column: 1 / -1;
+  padding: 2rem;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  .footer-link {
+    font-size: 1.5rem;
+    color: $text-color;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    &:hover {
+      text-decoration: underline;
+    }
+    img {
+      width: 2rem;
+      height: 2rem;
+      margin-right: 0.5rem;
+    }
+  }
+}

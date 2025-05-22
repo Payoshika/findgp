@@ -1,3 +1,7 @@
+.gm-style-iw,
+.gm-style-iw-d {
+  max-height: min-content !important;
+}
 .map-container {
   margin: 0;
 }
@@ -5,6 +9,7 @@
 .map-info-window {
   font-family: "Roboto", Arial, sans-serif;
   padding: 8px;
+  width: 90%;
 
   .map-info-rank {
     display: flex;
@@ -152,7 +157,7 @@
 
 .gm-style-iw-chr {
   position: absolute !important;
-  top: 0 !important;
+  top: 3% !important;
   right: 0 !important;
 }
 // Add these styles for the new confidence badge

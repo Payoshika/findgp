@@ -192,13 +192,10 @@ const Result = () => {
                 {searchResults.indexOf(result) + 1}
               </div>
             )}
-            {includePrivateGPs &&
-              result.name.toLowerCase().includes("private") && (
-                <div className="private-badge">PRIVATE</div>
-              )}
+            {result.isPrivatePractice && (
+              <div className="private-badge">PRIVATE</div>
+            )}
             <h3>{result.name}</h3>
-            <p className="vicinity">{result.vicinity}</p>
-
             {result.rating > 0 ? (
               <div className="result-details">
                 <div className="rating-container">
@@ -215,7 +212,7 @@ const Result = () => {
             ) : (
               <div className="no-rating">No ratings yet</div>
             )}
-
+            <p className="vicinity">📍{result.vicinity}</p>
             {/* Contact details section */}
             <div className="result-contact-details">
               {/* Phone number - if available */}

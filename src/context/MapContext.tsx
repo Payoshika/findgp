@@ -15,6 +15,7 @@ interface Location {
 // Update the SearchResult interface
 
 // In MapContext.tsx
+// In MapContext.tsx, update your SearchResult interface:
 interface SearchResult {
   id: string;
   name: string;
@@ -36,6 +37,11 @@ interface SearchResult {
   } | null;
   google_maps_url?: string | null;
   isTopThree: boolean;
+  // Add the new fields for private practice detection
+  isPrivatePractice?: boolean;
+  privateKeywordsFound?: string[];
+  nhsKeywordsFound?: string[];
+  privateConfidence?: number;
 }
 
 interface MapState {

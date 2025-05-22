@@ -242,7 +242,6 @@ const Map = () => {
                   : ""
               }
               <h3>${result.name}</h3>
-              <p>${result.vicinity}</p>
               ${
                 result.rating
                   ? `<div class="info-rating">
@@ -260,12 +259,13 @@ const Map = () => {
                     </div>`
                   : ""
               }
+              <p>📍 ${result.vicinity}</p>
               
 ${
   result.phone_number
     ? `
   <div class="info-detail">
-    <strong>Phone:</strong> 
+    <strong>📞 </strong> 
     <a href="tel:${result.phone_number}">${result.phone_number}</a>
   </div>
 `
@@ -276,7 +276,7 @@ ${
   result.website
     ? `
   <div class="info-detail">
-    <strong>Website:</strong> 
+    <strong>🌐 </strong> 
     <a href="${result.website}" target="_blank">${result.website
         .replace(/^https?:\/\//, "")
         .replace(/\/$/, "")}</a>
@@ -289,11 +289,6 @@ ${
                 <a href="https://www.google.com/maps/place/?q=place_id:${
                   result.place_id
                 }" target="_blank">View on Google Maps</a>
-                ${
-                  result.phone_number
-                    ? `<a href="tel:${result.phone_number}">Call</a>`
-                    : ""
-                }
               </div>
             </div>
           `;
@@ -342,7 +337,6 @@ ${
           const content = `
     <div class="map-info-window">
       <h3>${result.name}</h3>
-      <p>${result.vicinity}</p>
       ${
         result.rating
           ? `<div class="info-rating">
@@ -358,12 +352,14 @@ ${
             </div>`
           : `<div class="no-rating">No ratings yet</div>`
       }
+      <p>📍 ${result.vicinity}</p>
+
       
 ${
   result.phone_number
     ? `
   <div class="info-detail">
-    <strong>Phone:</strong> 
+    <strong>📞:</strong> 
     <a href="tel:${result.phone_number}">${result.phone_number}</a>
   </div>
 `
@@ -374,7 +370,7 @@ ${
   result.website
     ? `
   <div class="info-detail">
-    <strong>Website:</strong> 
+    <strong>🌐 </strong> 
     <a href="${result.website}" target="_blank">${result.website
         .replace(/^https?:\/\//, "")
         .replace(/\/$/, "")}</a>
@@ -402,11 +398,6 @@ ${
         <a href="https://www.google.com/maps/place/?q=place_id:${
           result.place_id
         }" target="_blank">View on Google Maps</a>
-        ${
-          result.phone_number
-            ? `<a href="tel:${result.phone_number}">Call</a>`
-            : ""
-        }
       </div>
     </div>
   `;

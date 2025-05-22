@@ -13,7 +13,6 @@ const Search = () => {
   const autocompleteRef = useRef<any>(null);
   // Add this with your other state variables
   const { searchLocation, searchResults } = state;
-  const [includePrivateGPs, setIncludePrivateGPs] = useState<boolean>(false);
 
   // Location states
   const [userLocation, setUserLocation] = useState<{
@@ -25,6 +24,10 @@ const Search = () => {
     "unknown" | "granted" | "denied" | "prompt"
   >("unknown");
 
+  useEffect(() => {
+    // Force reset includePrivateGPs to false on component mount
+    dispatch({ type: "SET_INCLUDE_PRIVATE_GPS", payload: false });
+  }, []);
   // Check location permission on load
   useEffect(() => {
     // Check if we've already prompted the user before
@@ -92,13 +95,22 @@ const Search = () => {
     initAutocomplete();
   }, []);
 
+  // Modify this useEffect to add more conditions
   useEffect(() => {
-    // If we already have search results and change the toggle, re-search
-    const { searchLocation } = state;
-    if (searchLocation && searchResults.length > 0) {
-      searchForGPs(searchLocation);
+    console.log("includePrivateGPs changed to:", state.includePrivateGPs);
+
+    // Only re-search if we have a location and either:
+    // 1) We have results already, or
+    // 2) We previously searched but got no results
+    if (
+      state.searchLocation &&
+      (state.searchResults.length > 0 ||
+        document.querySelector(".search-error")) // Check if we have an error message
+    ) {
+      console.log("Effect triggered search with:", state.includePrivateGPs);
+      searchForGPs(state.searchLocation, state.includePrivateGPs);
     }
-  }, [includePrivateGPs]);
+  }, [state.includePrivateGPs]);
 
   // Check permission and get location
   const checkPermissionAndLocate = () => {
@@ -167,7 +179,7 @@ const Search = () => {
             dispatch({ type: "SET_SEARCH_LOCATION", payload: location });
 
             // Search for GPs near user's location
-            searchForGPs(location);
+            searchForGPs(location, state.includePrivateGPs);
           } else {
             // Use coordinates even without an address
             const location = {
@@ -180,7 +192,7 @@ const Search = () => {
             dispatch({ type: "SET_SEARCH_LOCATION", payload: location });
 
             // Search for GPs near user's location
-            searchForGPs(location);
+            searchForGPs(location, state.includePrivateGPs);
           }
         });
       },
@@ -241,7 +253,7 @@ const Search = () => {
       dispatch({ type: "SET_SEARCH_LOCATION", payload: location });
 
       // Search for GPs near this location
-      searchForGPs(location);
+      searchForGPs(location, state.includePrivateGPs);
     } catch (error) {
       console.error("Error processing place selection:", error);
       setError("Failed to process location. Please try again.");
@@ -253,13 +265,23 @@ const Search = () => {
 
   // Function to search for GPs near a location
   // Update your searchForGPs function to handle private GP filtering
-
-  const searchForGPs = async (location: {
-    lat: number;
-    lng: number;
-    address: string;
-  }) => {
-    console.log("Searching for GPs near:", location);
+  // Update your searchForGPs function with the web scraping integration
+  // Function to search for GPs near a location
+  const searchForGPs = async (
+    location: {
+      lat: number;
+      lng: number;
+      address: string;
+    },
+    includePrivate: boolean
+  ) => {
+    console.log("private gps", includePrivate);
+    console.log(
+      "Searching for GPs near:",
+      location,
+      "with includePrivateGPs:",
+      includePrivate
+    );
     setIsSearching(true);
     setError(null);
 
@@ -280,7 +302,7 @@ const Search = () => {
       const service = new window.google.maps.places.PlacesService(map);
 
       // Adjust search keywords based on includePrivateGPs toggle
-      const searchKeyword = includePrivateGPs
+      const searchKeyword = state.includePrivateGPs
         ? "GP doctor general practitioner"
         : "GP doctor general practitioner -private";
 
@@ -301,9 +323,9 @@ const Search = () => {
           results &&
           results.length > 0
         ) {
-          // Filter out places with "private" in the name if includePrivateGPs is false
+          // Initial filtering based on name
           let filteredResults = results;
-          if (!includePrivateGPs) {
+          if (!state.includePrivateGPs) {
             filteredResults = results.filter(
               (place) =>
                 !(place.name && place.name.toLowerCase().includes("private"))
@@ -311,11 +333,11 @@ const Search = () => {
             console.log(
               `Filtered out ${
                 results.length - filteredResults.length
-              } private practices`
+              } private practices by name`
             );
           }
 
-          // Format basic results first - ACTUALLY MAP THE RESULTS
+          // Format basic results
           const basicResults = filteredResults.map((place) => {
             const lat = place.geometry?.location?.lat();
             const lng = place.geometry?.location?.lng();
@@ -334,83 +356,207 @@ const Search = () => {
               phone_number: null,
               website: null,
               opening_hours: null,
+              isPrivatePractice: false, // Default assumption
               isTopThree: false, // Will be set after sorting
             };
           });
 
-          // Sort by confidence score
-          const sortedResults = [...basicResults].sort((a, b) => {
-            const aScore = calculateConfidenceScore(
-              a.rating,
-              a.user_ratings_total
-            );
-            const bScore = calculateConfidenceScore(
-              b.rating,
-              b.user_ratings_total
-            );
-            return bScore - aScore;
-          });
+          // // Dispatch initial results to show something to the user quickly
+          // dispatch({ type: "SET_SEARCH_RESULTS", payload: basicResults });
 
-          // Mark top 3 results
-          if (sortedResults.length > 0) sortedResults[0].isTopThree = true;
-          if (sortedResults.length > 1) sortedResults[1].isTopThree = true;
-          if (sortedResults.length > 2) sortedResults[2].isTopThree = true;
+          // if (basicResults.length > 0) {
+          //   dispatch({ type: "SELECT_RESULT", payload: basicResults[0] });
+          // }
 
-          console.log("Sorted results:", sortedResults);
+          // Fetch details for each place including website
+          let detailedResults = await Promise.all(
+            basicResults.map(async (result) => {
+              return new Promise<SearchResult>((resolve) => {
+                service.getDetails(
+                  {
+                    placeId: result.place_id,
+                    fields: [
+                      "formatted_phone_number",
+                      "website",
+                      "opening_hours",
+                    ],
+                  },
+                  (placeDetails, detailsStatus) => {
+                    if (
+                      detailsStatus ===
+                        window.google.maps.places.PlacesServiceStatus.OK &&
+                      placeDetails
+                    ) {
+                      resolve({
+                        ...result,
+                        phone_number:
+                          placeDetails.formatted_phone_number || null,
+                        website: placeDetails.website || null,
+                        opening_hours: placeDetails.opening_hours || null,
+                      });
+                    } else {
+                      console.log(
+                        `Could not get details for ${result.name}:`,
+                        detailsStatus
+                      );
+                      resolve(result);
+                    }
+                  }
+                );
+              });
+            })
+          );
 
-          // DISPATCH THE RESULTS - This was missing!
-          dispatch({ type: "SET_SEARCH_RESULTS", payload: sortedResults });
+          // Update with detailed results
+          // dispatch({ type: "SET_SEARCH_RESULTS", payload: detailedResults });
 
-          // Select the first result by default
-          if (sortedResults.length > 0) {
-            dispatch({ type: "SELECT_RESULT", payload: sortedResults[0] });
-          }
+          // ONLY check websites when we want to exclude private GPs
+          if (!includePrivate) {
+            console.log("Excluding private GPs - checking websites...");
+            // Define a batch size to prevent too many parallel requests
+            const batchSize = 3;
+            const privatePracticeIds = new Set<string>();
+            // Process in batches
+            for (let i = 0; i < detailedResults.length; i += batchSize) {
+              console.log(`Processing batch ${i / batchSize + 1}...`);
+              const batch = detailedResults.slice(i, i + batchSize);
 
-          // Now fetch additional details for each place
-          // This is optional but provides more info
-          try {
-            const detailedResults = await Promise.all(
-              sortedResults.map(async (result) => {
-                return new Promise((resolve) => {
-                  service.getDetails(
-                    {
-                      placeId: result.place_id,
-                      fields: [
-                        "formatted_phone_number",
-                        "website",
-                        "opening_hours",
-                      ],
-                    },
-                    (placeDetails, detailsStatus) => {
-                      if (
-                        detailsStatus ===
-                          window.google.maps.places.PlacesServiceStatus.OK &&
-                        placeDetails
-                      ) {
-                        resolve({
-                          ...result,
-                          phone_number:
-                            placeDetails.formatted_phone_number || null,
-                          website: placeDetails.website || null,
-                          opening_hours: placeDetails.opening_hours || null,
-                        });
+              // Run batch in parallel but limit size
+              const batchResults = await Promise.all(
+                batch.map(async (result) => {
+                  // Only check websites if we have one
+                  if (result.website) {
+                    try {
+                      // Use encodeURIComponent for safe URL encoding
+                      const apiEndpoint =
+                        "https://gp-checker-api.vercel.app/api/check-website?url=" +
+                        result.website;
+
+                      console.log(
+                        `Checking ${result.name} website: ${result.website}`
+                      );
+                      const response = await fetch(apiEndpoint);
+
+                      if (response.ok) {
+                        const data = await response.json();
+
+                        if (data.isPrivate) {
+                          console.log(
+                            `${result.name} detected as private:`,
+                            data
+                          );
+                          privatePracticeIds.add(result.id);
+                          return {
+                            ...result,
+                            isPrivatePractice: true,
+                            privateKeywordsFound: data.privateKeywordsFound,
+                            nhsKeywordsFound: data.nhsKeywordsFound,
+                            privateConfidence: data.confidence,
+                          } as SearchResult;
+                        } else {
+                          console.log(`${result.name} is not private`);
+                        }
                       } else {
                         console.log(
-                          `Could not get details for ${result.name}:`,
-                          detailsStatus
+                          `Failed to check ${result.name}:`,
+                          response.statusText
                         );
-                        resolve(result);
                       }
+                    } catch (error) {
+                      console.log(
+                        `Error checking if ${result.name} is private:`,
+                        error
+                      );
                     }
-                  );
-                });
-              })
+                  }
+                  return result;
+                })
+              );
+
+              // Update the detailed results with the batch results
+              detailedResults = detailedResults.map((result) => {
+                const updatedResult = batchResults.find(
+                  (br) => br.id === result.id
+                );
+                return updatedResult || result;
+              });
+
+              // Update results after each batch to show progress
+              //   dispatch({
+              //     type: "SET_SEARCH_RESULTS",
+              //     payload: detailedResults,
+              //   });
+            }
+
+            // Only filter when we're excluding private GPs
+            const finalResults = detailedResults.filter(
+              (result) => !privatePracticeIds.has(result.id)
             );
-            // Update results with detailed information
-            dispatch({ type: "SET_SEARCH_RESULTS", payload: detailedResults });
-          } catch (error) {
-            console.error("Error fetching place details:", error);
-            // We already dispatched basic results, so search still works
+
+            console.log(
+              `Filtered out ${
+                detailedResults.length - finalResults.length
+              } private practices by website content`
+            );
+
+            // Only sort the filtered results
+            const sortedResults = [...finalResults].sort((a, b) => {
+              const aScore = calculateConfidenceScore(
+                a.rating,
+                a.user_ratings_total
+              );
+              const bScore = calculateConfidenceScore(
+                b.rating,
+                b.user_ratings_total
+              );
+              return bScore - aScore;
+            });
+
+            // Mark top 3 results
+            if (sortedResults.length > 0) sortedResults[0].isTopThree = true;
+            if (sortedResults.length > 1) sortedResults[1].isTopThree = true;
+            if (sortedResults.length > 2) sortedResults[2].isTopThree = true;
+
+            // Update with final filtered results
+            dispatch({ type: "SET_SEARCH_RESULTS", payload: sortedResults });
+
+            // Select the first result
+            if (sortedResults.length > 0) {
+              dispatch({ type: "SELECT_RESULT", payload: sortedResults[0] });
+            } else if (detailedResults.length > 0) {
+              // If we filtered everything out, show a message
+              setError(
+                "No NHS GP practices found. Try including private practices."
+              );
+            }
+          } else {
+            // When including private GPs, skip the website checks entirely
+            console.log("Including private GPs - skipping website checks");
+            // Just sort and mark top 3 without filtering
+            const sortedResults = [...detailedResults].sort((a, b) => {
+              const aScore = calculateConfidenceScore(
+                a.rating,
+                a.user_ratings_total
+              );
+              const bScore = calculateConfidenceScore(
+                b.rating,
+                b.user_ratings_total
+              );
+              return bScore - aScore;
+            });
+
+            // Mark top 3 results
+            if (sortedResults.length > 0) sortedResults[0].isTopThree = true;
+            if (sortedResults.length > 1) sortedResults[1].isTopThree = true;
+            if (sortedResults.length > 2) sortedResults[2].isTopThree = true;
+
+            // Update with final sorted results
+            dispatch({ type: "SET_SEARCH_RESULTS", payload: sortedResults });
+
+            // Select the first result
+            if (sortedResults.length > 0) {
+              dispatch({ type: "SELECT_RESULT", payload: sortedResults[0] });
+            }
           }
         } else {
           setError("No GP practices found near this location");
@@ -425,8 +571,21 @@ const Search = () => {
       console.error("Error during nearby search:", error);
       setError("Failed to search for GP practices. Please try again.");
       setIsSearching(false);
+
+      // Clean up the map div if it was created
+      try {
+        const mapDiv = document.querySelector(
+          "div[style*='position: absolute']"
+        );
+        if (mapDiv && mapDiv.parentNode) {
+          mapDiv.parentNode.removeChild(mapDiv);
+        }
+      } catch (cleanupError) {
+        console.error("Error cleaning up map div:", cleanupError);
+      }
     }
   };
+
   // Handle location modal responses
   const handleLocationModalResponse = (allow: boolean) => {
     setShowLocationModal(false);
@@ -535,12 +694,21 @@ const Search = () => {
     }
   };
   const handleTogglePrivateGPs = () => {
-    const newValue = !state.includePrivateGPs;
+    // Get the current value before toggling
+    const currentValue = state.includePrivateGPs;
+    console.log("Current includePrivateGPs value:", currentValue);
+
+    // Calculate new value
+    const newValue = !currentValue;
+    console.log("Setting to:", newValue);
+
+    // Update state
     dispatch({ type: "SET_INCLUDE_PRIVATE_GPS", payload: newValue });
 
-    // Re-search if we already have results
+    // Immediately search with the NEW value (not using state which might not have updated yet)
     if (state.searchLocation) {
-      searchForGPs(state.searchLocation);
+      // Create a new search function that takes the includePrivateGPs value as a parameter
+      searchForGPs(state.searchLocation, newValue);
     }
   };
 
@@ -614,6 +782,9 @@ const Search = () => {
             />
             <span className="toggle-switch"></span>
             <span className="toggle-label">Include private GPs</span>
+            <span className="toggle-status">
+              {state.includePrivateGPs ? "(On)" : "(Off)"}
+            </span>
           </label>
         </div>
       </div>
@@ -625,7 +796,9 @@ const Search = () => {
         <div className="search-error">{error}</div>
       )}
       {isSearching && (
-        <div className="search-status">Searching for GP practices...</div>
+        <div className="search-status">
+          <p>Searching for GP practices..</p>
+        </div>
       )}
     </div>
   );
