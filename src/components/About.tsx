@@ -3,9 +3,8 @@ import React from "react";
 const About = () => {
   return (
     <div className="about-container">
-      <h1>Why I Created FindGP</h1>
-
       <div className="story-container">
+        <h2>About FindGP</h2>
         <div className="story-content">
           <p>
             As an international student beginning my Master's studies in the UK,
@@ -49,6 +48,11 @@ const About = () => {
             sometimes the closest option isn't the best option—and having that
             information can make all the difference.
           </p>
+          <p>
+            I hope this tool helps you find the right GP for your needs, so you
+            can focus on what really matters: your health and well-being.
+          </p>
+          <p>Kohei Oishi</p>
         </div>
       </div>
     </div>
