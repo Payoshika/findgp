@@ -2,7 +2,7 @@ import { useMapContext } from "../context/MapContext";
 
 const Result = () => {
   const { state, dispatch } = useMapContext();
-  const { searchResults, selectedResult, includePrivateGPs } = state;
+  const { searchResults, selectedResult } = state;
 
   if (searchResults.length === 0) {
     return null; // Don't render anything if no results
@@ -125,44 +125,6 @@ const Result = () => {
         {getConfidenceLevelDescription(confidenceScore)} Confidence
       </div>
     );
-  };
-  // Add this helper function to your Result component
-  const getOpenStatus = (hours: any): string => {
-    if (!hours || !hours.weekday_text) {
-      return "Hours not available";
-    }
-
-    try {
-      // Use the isOpen function if available (Google API sometimes provides this)
-      if (typeof hours.isOpen === "function") {
-        return hours.isOpen() ? "Open now" : "Closed now";
-      }
-
-      // Otherwise try to determine from the weekday_text
-      const days = [
-        "Sunday",
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday",
-        "Saturday",
-      ];
-      const today = days[new Date().getDay()];
-      const todayHours = hours.weekday_text.find((text: string) =>
-        text.startsWith(today)
-      );
-
-      if (!todayHours) return "Hours not available";
-
-      // Extract hours from string like "Monday: 9:00 AM – 5:00 PM"
-      const hoursText = todayHours.split(": ")[1];
-
-      // For simple display in the list view, just show today's hours
-      return `Today: ${hoursText}`;
-    } catch (e) {
-      return "Hours not available";
-    }
   };
 
   return (

@@ -198,19 +198,6 @@ const Map = () => {
 
         // Create an info window with more details for top 3
         if (isTopThree) {
-          // Calculate confidence score
-          const confidenceScore = calculateConfidenceScore(
-            result.rating || 0,
-            result.user_ratings_total || 0
-          );
-
-          // Determine rank text
-          const rankText = isTopOne
-            ? "Top Rated GP"
-            : isTopTwo
-            ? "2nd Highest Rated"
-            : "3rd Highest Rated";
-
           // Create stars for rating display
           let starsHtml = "";
           if (result.rating) {
@@ -509,48 +496,6 @@ ${
       </div>
     );
   }
-
-  const getOpeningStatus = (hours: any): string => {
-    if (!hours || !hours.periods || !hours.weekday_text) {
-      return "Hours not available";
-    }
-
-    try {
-      // If the API provides this information directly
-      if (typeof hours.isOpen === "function") {
-        return hours.isOpen() ? "Open now" : "Closed now";
-      }
-
-      // Otherwise try to determine from the periods
-      const now = new Date();
-      const day = now.getDay(); // 0 = Sunday, 1 = Monday, etc.
-      const hour = now.getHours();
-      const minute = now.getMinutes();
-
-      const todayPeriod = hours.periods.find((p: any) => p.open.day === day);
-
-      if (!todayPeriod) {
-        return "Closed today";
-      }
-
-      const openHour = parseInt(todayPeriod.open.hours, 10);
-      const openMinute = parseInt(todayPeriod.open.minutes, 10);
-      const closeHour = parseInt(todayPeriod.close.hours, 10);
-      const closeMinute = parseInt(todayPeriod.close.minutes, 10);
-
-      const isOpen =
-        (hour > openHour || (hour === openHour && minute >= openMinute)) &&
-        (hour < closeHour || (hour === closeHour && minute < closeMinute));
-
-      return isOpen ? "Open now" : "Closed now";
-    } catch (e) {
-      // For today's hours, just extract from the text
-      const todayText = hours.weekday_text.find((text: string) =>
-        isToday(text)
-      );
-      return todayText ? todayText.split(": ")[1] : "Hours not available";
-    }
-  };
 
   // Helper function to get today's hours
   const getTodayHours = (hours: any): string => {

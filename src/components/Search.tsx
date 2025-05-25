@@ -711,6 +711,7 @@ const Search = () => {
       searchForGPs(state.searchLocation, newValue);
     }
   };
+  console.log(userLocation);
 
   return (
     <div className="search search-container">
