@@ -13,11 +13,11 @@ import About from "./components/About";
 function App() {
   return (
     <div className="container">
-      <Header />
       <Router>
+        <Header />
         <Routes>
           <Route
-            path=""
+            path="/"
             element={
               <MapProvider>
                 <>
@@ -31,8 +31,8 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/how-it-works" element={<HowItWorks />} />
         </Routes>
+        <Footer />
       </Router>
-      <Footer />
     </div>
   );
 }
