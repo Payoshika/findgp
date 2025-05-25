@@ -1,13 +1,12 @@
 import React from "react";
+import logo from "../images/logo.png";
 
 const Header = () => {
   return (
     <div className="header">
-      <h1>
-        <a href="/" style={{ color: "inherit", textDecoration: "none" }}>
-          Find Your GP
-        </a>
-      </h1>
+      <a href="/" style={{ color: "inherit", textDecoration: "none" }}>
+        <img src={logo} alt="Find Your GP Logo" />
+      </a>
     </div>
   );
 };

@@ -1,5 +1,7 @@
 // all the variables
 $background-color: #fcfaf1;
+$background-color: #ffffff;
+
 $text-color: #3a3e46;
 
 *,
@@ -28,7 +30,10 @@ body {
   }
 }
 
-p {
+p,
+ul,
+ol,
+li {
   font-size: 1.5rem;
   line-height: 2;
 }

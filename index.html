@@ -2,12 +2,105 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + React + TS</title>
+
+    <!-- Favicon settings -->
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="/src/images/logo.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="/src/images/logo.png"
+    />
+    <link rel="apple-touch-icon" href="/src/images/logo.png" />
+
+    <!-- Primary Meta Tags -->
+    <title>FindGP - Find Highly-Rated NHS GP Practices Near You</title>
+    <meta
+      name="title"
+      content="FindGP - Find Highly-Rated NHS GP Practices Near You"
+    />
+    <meta
+      name="description"
+      content="Discover the best-rated NHS GP practices in your area. Compare reviews, check opening hours, and find contact details to register with a quality healthcare provider."
+    />
+    <meta
+      name="keywords"
+      content="GP finder, NHS doctor, general practitioner, best GP near me, GP ratings, doctor reviews"
+    />
+    <meta name="author" content="FindGP" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://findgp.vercel.app/" />
+    <meta
+      property="og:title"
+      content="FindGP - Find Highly-Rated NHS GP Practices Near You"
+    />
+    <meta
+      property="og:description"
+      content="Discover the best-rated NHS GP practices in your area. Compare reviews, check opening hours, and find contact details to register with a quality healthcare provider."
+    />
+    <meta
+      property="og:image"
+      content="https://findgp.vercel.app/social-preview.jpg"
+    />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://findgp.vercel.app/" />
+    <meta
+      property="twitter:title"
+      content="FindGP - Find Highly-Rated NHS GP Practices Near You"
+    />
+    <meta
+      property="twitter:description"
+      content="Discover the best-rated NHS GP practices in your area. Compare reviews, check opening hours, and find contact details to register with a quality healthcare provider."
+    />
+    <meta
+      property="twitter:image"
+      content="https://findgp.vercel.app/social-preview.jpg"
+    />
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://findgp.vercel.app/" />
+
+    <!-- Robots -->
+    <meta name="robots" content="index, follow" />
+
+    <!-- Additional SEO-friendly meta tags -->
+    <meta name="application-name" content="FindGP" />
+    <meta name="theme-color" content="#fcfaf1" />
+
+    <!-- Structured data for Rich Results -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "FindGP",
+        "url": "https://findgp.vercel.app/",
+        "description": "Find highly-rated NHS GP practices near you with reviews and contact information.",
+        "applicationCategory": "Healthcare",
+        "operatingSystem": "Web",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "GBP"
+        }
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+
+    <!-- Preconnect to Google services (if using Google Maps, Analytics, etc.) -->
+    <link rel="preconnect" href="https://maps.googleapis.com" />
+    <link rel="preconnect" href="https://maps.gstatic.com" />
   </body>
 </html>

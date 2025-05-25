@@ -43,12 +43,12 @@
         cursor: pointer;
 
         &.primary {
-          background-color: #0066cc;
+          background-color: #308ae2;
           color: white;
           border: none;
 
           &:hover {
-            background-color: #0052a3;
+            background-color: #308ae2;
           }
         }
 
@@ -98,7 +98,7 @@
   }
 
   .refresh-button {
-    background-color: #0066cc;
+    background-color: #308ae2;
     color: white;
     border: none;
     padding: 8px 16px;
@@ -107,7 +107,7 @@
     margin-top: 8px;
 
     &:hover {
-      background-color: #0052a3;
+      background-color: #308ae2;
     }
   }
 }

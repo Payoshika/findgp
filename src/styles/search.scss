@@ -85,7 +85,7 @@ $background-color: base.$background-color;
       position: absolute;
 
       &:checked + .toggle-switch {
-        background-color: #4285f4;
+        background-color: #308ae2;
 
         &:before {
           transform: translateX(18px);

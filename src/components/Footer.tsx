@@ -5,7 +5,7 @@ const Footer = () => {
   return (
     <footer className="footer">
       <a href="/about" className="footer-link">
-        <strong>About Find GP</strong>
+        <strong>About FindGP</strong>
       </a>
       <a href="/how-it-works" className="footer-link">
         <strong>How it Works</strong>

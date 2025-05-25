@@ -18,8 +18,12 @@ $background-color: base.$background-color;
 .header {
   grid-column: 1 / -1;
   grid-row: 1;
-  padding: 2rem;
   text-align: center;
+  a {
+    img {
+      width: 20rem;
+    }
+  }
 }
 
 .search {
@@ -41,7 +45,7 @@ $background-color: base.$background-color;
 }
 .how-it-works-container {
   grid-column: 1 / -1;
-  padding: 2rem;
+  padding: 4rem;
   @include mixins.box;
 }
 .about-container {

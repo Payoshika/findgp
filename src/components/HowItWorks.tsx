@@ -130,14 +130,14 @@ const HowItWorks = () => {
           <ul>
             <li>Reading the actual reviews, not just the ratings</li>
             <li>
-              Checking the{" "}
+              Checking the
               <a
                 href="https://www.nhs.uk/service-search/find-a-gp"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                NHS website
-              </a>{" "}
+                <strong> &nbsp;NHS website&nbsp;</strong>
+              </a>
               for official quality metrics
             </li>
             <li>

@@ -782,9 +782,6 @@ const Search = () => {
             />
             <span className="toggle-switch"></span>
             <span className="toggle-label">Include private GPs</span>
-            <span className="toggle-status">
-              {state.includePrivateGPs ? "(On)" : "(Off)"}
-            </span>
           </label>
         </div>
       </div>
