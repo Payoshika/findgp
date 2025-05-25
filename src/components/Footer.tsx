@@ -1,4 +1,3 @@
-import React from "react";
 import bmcImg from "../images/bmc.png";
 
 const Footer = () => {

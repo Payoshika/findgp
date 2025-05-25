@@ -16,7 +16,7 @@ interface Location {
 
 // In MapContext.tsx
 // In MapContext.tsx, update your SearchResult interface:
-interface SearchResult {
+export interface SearchResult {
   id: string;
   name: string;
   vicinity: string;

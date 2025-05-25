@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import { loadGoogleMapsApi } from "../utilities/loadGoogleMap";
 import { useMapContext } from "../context/MapContext";
+import type { SearchResult } from "../context/MapContext";
 
+// Define the SearchResult type
 const Search = () => {
   // Use the context
   const { state, dispatch } = useMapContext();
@@ -11,18 +13,12 @@ const Search = () => {
   const autocompleteWrapperRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const autocompleteRef = useRef<any>(null);
-  // Add this with your other state variables
-  const { searchLocation, searchResults } = state;
-
   // Location states
   const [userLocation, setUserLocation] = useState<{
     lat: number;
     lng: number;
   } | null>(null);
   const [showLocationModal, setShowLocationModal] = useState<boolean>(false);
-  const [locationPermissionState, setLocationPermissionState] = useState<
-    "unknown" | "granted" | "denied" | "prompt"
-  >("unknown");
 
   useEffect(() => {
     // Force reset includePrivateGPs to false on component mount
@@ -124,8 +120,6 @@ const Search = () => {
       navigator.permissions
         .query({ name: "geolocation" })
         .then((permissionStatus) => {
-          setLocationPermissionState(permissionStatus.state);
-
           if (permissionStatus.state === "granted") {
             getUserLocation();
           } else if (permissionStatus.state === "prompt") {
@@ -206,7 +200,6 @@ const Search = () => {
         // Provide user-friendly error messages
         switch (error.code) {
           case error.PERMISSION_DENIED:
-            setLocationPermissionState("denied");
             setError(
               "Location access denied. Please enable location services."
             );
@@ -392,7 +385,14 @@ const Search = () => {
                         phone_number:
                           placeDetails.formatted_phone_number || null,
                         website: placeDetails.website || null,
-                        opening_hours: placeDetails.opening_hours || null,
+                        opening_hours: placeDetails.opening_hours
+                          ? {
+                              ...placeDetails.opening_hours,
+                              isOpen: (...args: any[]) =>
+                                placeDetails.opening_hours!.isOpen(...args) ??
+                                false,
+                            }
+                          : null,
                       });
                     } else {
                       console.log(
