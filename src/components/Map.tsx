@@ -30,52 +30,6 @@ const Map = () => {
   const { state, dispatch } = useMapContext();
   const { searchLocation, searchResults, selectedResult } = state;
 
-  // Calculate confidence score (used for info windows)
-  const calculateConfidenceScore = (
-    rating: number,
-    totalRatings: number
-  ): number => {
-    if (totalRatings === 0) return 0;
-
-    // Set a minimum threshold for reviews
-    const minimumReviewsThreshold = 5;
-    const reviewThresholdPenalty =
-      totalRatings < minimumReviewsThreshold
-        ? (minimumReviewsThreshold - totalRatings) * 0.5
-        : 0;
-
-    // Normalize rating from 0-5 scale to 0-1 scale
-    const p = rating / 5;
-
-    // z score for 95% confidence interval is ~1.96
-    const z = 1.96;
-
-    // Basic Wilson score calculation
-    const numerator = p + (z * z) / (2 * totalRatings);
-    const denominator = 1 + (z * z) / totalRatings;
-    const radicand =
-      (p * (1 - p)) / totalRatings +
-      (z * z) / (4 * totalRatings * totalRatings);
-
-    const wilsonScore =
-      ((numerator - z * Math.sqrt(radicand)) / denominator) * 5;
-
-    // Apply a review count bonus
-    const reviewCountBonus = Math.log10(totalRatings + 1) * 0.4;
-
-    // Add a rating bonus for high-rated places
-    const ratingBonus = rating >= 4.5 ? 0.3 : rating >= 4.0 ? 0.15 : 0;
-
-    // Apply the review threshold penalty and cap the final score at 5.0
-    return Math.max(
-      0,
-      Math.min(
-        wilsonScore + reviewCountBonus + ratingBonus - reviewThresholdPenalty,
-        5.0
-      )
-    );
-  };
-
   // Initialize the map
   useEffect(() => {
     const initMap = async () => {
@@ -529,23 +483,6 @@ ${
       return "Hours not available";
     }
   };
-
-  function isToday(day: any) {
-    // Try to detect if the given day string matches today's day name
-    const todayIndex = new Date().getDay(); // 0 (Sun) - 6 (Sat)
-    // Google weekday_text usually starts with Monday, so shift index
-    const days = [
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday",
-      "Sunday",
-    ];
-    const todayName = days[(todayIndex + 6) % 7]; // shift so Monday is 0
-    return typeof day === "string" && day.startsWith(todayName);
-  }
 
   return (
     <div className="map map-container">
